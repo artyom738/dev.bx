@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans:wght@400;600&display=swap');
+
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+	height: 100vh;
+	background: #383838;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.logo {
+	margin: 50px 80px;
+}
+
+.sidebar-list-container {
+	overflow: auto;
+	margin-bottom: 30px;
+}
+
+.sidebar-list-container::-webkit-scrollbar {
+	width: 0;
+}
+
+.sidebar-list {
+	padding: 0 30px;
+}
+
+.sidebar-item {
+	display: block;
+	border-bottom: 2px solid rgba(242, 242, 242, 0.1);;
+}
+
+.sidebar-item:last-child {
+	border-bottom: none;
+}
+
+.sidebar-item a {
+	display: flex;
+	align-items: center;
+	padding: 0 15px;
+	height: 70px;
+	width: 310px;
+	font-family: 'Open Sans', sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	font-size: 18px;
+	line-height: 22px;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: #B7B7B7;
+	transition: .3s;
+}
+
+.sidebar-item a:hover, .sidebar-item--active a {
+	color: white;
+	background-color: rgba(255, 255, 255, 0.05);
+	transition: .3s;
+}
+
+.wrapper {
+	display: flex;
+	height: 100vh;
+	background: #f2f2f2;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+
+.header {
+	font-family: 'Open Sans', sans-serif;
+	display: flex;
+	padding: 23px 45px;
+	background: white;
+}
+
+.header form {
+	display: flex;
+	height: 40px;
+}
+
+.header-search-container {
+	display: flex;
+	align-items: center;
+	width: 770px;
+	height: 40px;
+	border-bottom: 1px solid #C4C4C4;
+	margin-right: 14px;
+}
+
+.header-search-icon {
+	display: block;
+	height: 24px;
+	width: 24px;
+	margin-right: 14px;
+}
+
+.header-search-field {
+	display: block;
+	width: 100%;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 1.5;
+	border: none;
+}
+
+.header-search-button {
+	width: 90px;
+	height: 40px;
+	background: #E7A04E;
+	border-radius: 7px;
+	color: #FFFFFF;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: bold;
+	font-size: 12px;
+	text-transform: uppercase;
+	margin-right: 134px;
+	cursor: pointer;
+}
+
+.header-addfilm a {
+	display: flex;
+	width: 160px;
+	height: 40px;
+	background: #4EE7B0;
+	border-radius: 7px;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 12px;
+	text-transform: uppercase;
+	justify-content: center;
+	align-items: center;
+}
+
+.content {
+	display: flex;
+	flex: 1;
+	overflow: auto;
+	padding-left: 29px;
+	flex-wrap: wrap;
+}
+
+.movie-list-item {
+	display: block;
+	position: relative;
+	width: 370px;
+	height: 700px;
+	background: #FFFFFF;
+	font-family: 'Open Sans', sans-serif;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 20px;
+	margin: 20px 15px;
+}
+
+.movie-list-item-img {
+	display: block;
+	height: 430px;
+	width: 100%;
+	background-size: cover;
+	border-radius: 20px 20px 0 0;
+}
+
+.movie-list-item-title {
+	font-weight: 600;
+	font-size: 22px;
+	line-height: 30px;
+	color: #333333;
+	padding: 12px 20px 0 20px;
+}
+
+.movie-list-item-subtitle {
+	font-weight: 600;
+	font-size: 14px;
+	line-height: 25px;
+	color: #999999;
+	padding: 0 20px 15px 20px;
+}
+.movie-list-item-separator {
+	display: block;
+	margin: 0 20px;
+	height: 1px;
+	background: #F2F2F2;
+}
+.movie-list-item-description {
+	min-height: 100px;
+	max-height: 100px;
+	font-size: 14px;
+	line-height: 20px;
+	color: #333333;
+	padding: 15px 20px;
+}
+
+.movie-list-item-bottom {
+	display: flex;
+	justify-content: space-between;
+	padding: 8px 20px;
+}
+
+.movie-list-item-time {
+	display: flex;
+}
+
+.movie-list-item-clock {
+	margin-right: 4px;
+	height: 20px;
+	width: 20px;
+	background-size: cover;
+}
+
+.movie-list-item-duration {
+	font-size: 12px;
+	line-height: 22px;
+	color: #CCCCCC;
+}
+
+.movie-list-item-genre {
+	font-size: 10px;
+	line-height: 22px;
+	color: #CCCCCC;
+	text-transform: uppercase;
+}
+
+.movie-list-item-overlay {
+	display: flex;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	justify-content: center;
+	align-items: center;
+	background: rgba(0, 0, 0, 0.7);
+	width: 370px;
+	height: 700px;
+	z-index: 9;
+	border-radius: 20px;
+	opacity: 0;
+	transition: 0.2s;
+}
+
+.movie-list-item-overlay:hover {
+	opacity: 1;
+	transition: 0.2s;
+}
+
+.movie-list-item-overlay-link {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 220px;
+	height: 56px;
+	font-size: 18px;
+	background: #4EE7B0;
+	border-radius: 7px;
+	text-align: center;
+	font-weight: bold;
+	color: #FFFFFF;
+}
