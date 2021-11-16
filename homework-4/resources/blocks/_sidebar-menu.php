@@ -1,8 +1,7 @@
 <?php
 /** @var array $genres */
 /** @var array $config */
-
-$currentPage = basename($_SERVER['SCRIPT_FILENAME']);
+/** @var string $currentPage */
 
 ?>
 <li class="sidebar-item <?= ($currentPage === 'index.php' && !isset($_GET['genre'])) ? 'sidebar-item--active' : ''?>"><a href="index.php"><?= $config['menu']['index'] ?></a></li>

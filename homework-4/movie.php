@@ -11,7 +11,8 @@ require_once "./lib/pagename.php";
 require_once "./config/app.php";
 require_once "./resources/pages/sidebar-menu.php";
 
-$num = $_GET['id'];
+isset($_GET['id']) ? $num = $_GET['id'] : $num = 0;
+
 
 $content = renderTemplate('./resources/pages/movie-page.php', ['movie' => $movies[$num-1]]);
 

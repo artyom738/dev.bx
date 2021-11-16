@@ -4,7 +4,7 @@
 
 require_once './lib/helper-functions.php';
 
-function FilterMovies(string $code, array $movies, array $genres): string
+function filterMovies(string $code, array $movies, array $genres): string
 {
 	$result = '';
 	foreach ($movies as $movie)
@@ -22,7 +22,7 @@ function searchMovie(string $query, array $movies): string
 	$result = '';
 	foreach ($movies as $movie)
 	{
-		if (str_contains($movie['title'], $_GET['query']))
+		if (str_contains($movie['title'], $query))
 		{
 			$result .= renderTemplate("./resources/blocks/_movie-item.php", ['movie' => $movie]);
 		}
@@ -32,18 +32,4 @@ function searchMovie(string $query, array $movies): string
 		$result = renderTemplate('./resources/pages/no-search-results.php');
 	}
 	return $result;
-}
-
-
-if (isset($_GET['genre']))
-{
-	$movieItem = FilterMovies($_GET['genre'], $movies, $genres);
-}
-elseif (isset($_GET['query']) && $_GET['query'] !== '')
-{
-	$movieItem = searchMovie($_GET['query'], $movies);
-}
-else
-{
-	$movieItem = renderTemplate('./resources/pages/movie-item.php', ['movies' => $movies]);
 }
