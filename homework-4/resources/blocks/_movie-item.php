@@ -1,19 +1,19 @@
 <?php
 /** @var array $movie */
 
-$movieID = $movie['id'];
+$movieID = $movie['ID'];
 
-$movieTitle = mb_strimwidth($movie['title'], 0, 18, '...');
+$movieTitle = mb_strimwidth($movie['TITLE'], 0, 18, '...');
 
-$movieOriginalTitle = mb_strimwidth($movie['original-title'], 0, 47, '...');
+$movieOriginalTitle = mb_strimwidth($movie['ORIGINAL_TITLE'], 0, 47, '...');
 
-$movieDescription = mb_strimwidth($movie['description'], 0, 190, '...');
+$movieDescription = mb_strimwidth($movie['DESCRIPTION'], 0, 190, '...');
 
-$duration = $movie['duration'];
+$duration = $movie['DURATION'];
 
 $durationHoursMins = '0' . intdiv($duration, 60) . ':' . ($duration % 60);
 
-$movieGenres = implode(', ', array_slice($movie['genres'], 0, 3));
+$movieGenres = implode(', ', array_slice(explode(',', $movie['genres']), 0, 3));
 
 ?>
 
@@ -23,8 +23,8 @@ $movieGenres = implode(', ', array_slice($movie['genres'], 0, 3));
 	<div class="movie-list-item-overlay">
 		<a href="./movie.php?id=<?= $movieID ?>" class="movie-list-item-overlay-link">ПОДРОБНЕЕ</a>
 	</div>
-	<div class="movie-list-item-img" style="background-image: url(img/<?=$movie['id']?>.jpg)"></div>
-	<div class="movie-list-item-title"><?= $movieTitle ?> (<?=$movie['release-date']?>)</div>
+	<div class="movie-list-item-img" style="background-image: url(img/<?= $movieID ?>.jpg)"></div>
+	<div class="movie-list-item-title"><?= $movieTitle ?> (<?=$movie['RELEASE_DATE']?>)</div>
 	<div class="movie-list-item-subtitle"><?= $movieOriginalTitle ?></div>
 	<div class="movie-list-item-separator"></div>
 	<div class="movie-list-item-description"><?= $movieDescription ?></div>

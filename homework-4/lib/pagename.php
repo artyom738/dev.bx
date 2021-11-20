@@ -1,6 +1,6 @@
 <?php
 require_once './data/pages.php';
-require_once './data/movies.php';
+
 
 $scriptName = basename($_SERVER['SCRIPT_FILENAME'], '.php');
 

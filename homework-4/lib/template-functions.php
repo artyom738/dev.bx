@@ -4,7 +4,8 @@ function renderTemplate(string $path, array $templateData = []): string
 {
 	if (!file_exists($path))
 	{
-		return "";
+		trigger_error('Path is wrong', E_USER_ERROR);
+		return '';
 	}
 
 	extract($templateData, EXTR_OVERWRITE);

@@ -1,7 +1,6 @@
 <?php
-/** @var array $movies */
-?>
+foreach ($movies as $movie)
+{
+	echo renderTemplate("./resources/blocks/_movie-item.php", ['movie' => $movie]);
+}
 
-<?php foreach ($movies as $movie): ?>
-	<?= renderTemplate("./resources/blocks/_movie-item.php", ['movie' => $movie]) ?>
-<?php endforeach; ?>

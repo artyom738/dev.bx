@@ -1,6 +1,7 @@
 <?php
 
 /** @var array $content */
+/** @var string $pagename */
 /** @var array $config */
 /** @var array $sidebarGenres */
 
@@ -10,7 +11,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title><?= $config['title'] ?></title>
+	<title><?= $pagename ?> | BITFLIX</title>
 	<link rel="stylesheet" href="resources/css/reset.css">
 	<link rel="stylesheet" href="resources/css/main.css">
 </head>

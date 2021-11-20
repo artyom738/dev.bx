@@ -1,8 +1,9 @@
 <?php
-/** @var array $genreEng */
-/** @var array $genreRu */
+/** @var array $code */
+/** @var array $name */
+
+isset($_GET['genre']) ? $genre = $_GET['genre'] : $genre = '';
+
 ?>
 
-<li class="sidebar-item <?= $_GET['genre'] === $genreEng ? 'sidebar-item--active' : ''?>"><a href="index.php?genre=<?= $genreEng ?>"><?= $genreRu ?></a></li>
-
-
+<li class="sidebar-item <?= $genre === $code ? 'sidebar-item--active' : ''?>"><a href="index.php?genre=<?= $code ?>"><?= $name ?></a></li>
