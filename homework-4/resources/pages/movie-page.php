@@ -2,6 +2,8 @@
 
 /** @var array $movie */
 
+$movieActors = getActorsByListId($actors, $movie['actors']);
+
 ?>
 <link rel="stylesheet" href="./resources/css/movie-page.css">
 <div class="movie-wrapper">
@@ -39,7 +41,7 @@
 					</tr>
 					<tr>
 						<td>В главных ролях:</td>
-						<td><?= $movie['actors'] ?></td>
+						<td><?= $movieActors ?></td>
 					</tr>
 				</table>
 			</div>

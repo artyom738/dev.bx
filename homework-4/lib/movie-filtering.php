@@ -18,20 +18,31 @@ function getGenres(mysqli $database): array
 	return $out;
 }
 
+function getActors(mysqli $database): array
+{
+	$query = 'SELECT ID, NAME FROM actor';
+	$result = mysqli_query($database, $query);
+	$out = [];
+	while ($row = mysqli_fetch_assoc($result))
+	{
+		$out[(string)$row['ID']] = ['NAME' => $row['NAME']];
+	}
+	return $out;
+}
+
 function getMovies(mysqli $database, string $code = ''): array
 {
 	$code = htmlspecialchars($code);
 
-	$query = 'SELECT m.ID, m.TITLE, m.ORIGINAL_TITLE, m.DESCRIPTION, m.DURATION, m.RELEASE_DATE, genreName.genres
+	$query = 'SELECT m.ID, m.TITLE, m.ORIGINAL_TITLE, m.DESCRIPTION, m.DURATION, m.RELEASE_DATE, genreId.genres
 FROM movie m
 	     LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
-	     LEFT JOIN genre g on mg.GENRE_ID = g.ID
-LEFT JOIN
-(SELECT group_concat(g.NAME) genres, m.ID as MOVIE_ID
-FROM movie m
-	     LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
-	     LEFT JOIN genre g on mg.GENRE_ID = g.ID
-GROUP BY TITLE) genreName on genreName.MOVIE_ID = m.ID';
+         LEFT JOIN genre g on g.ID = mg.GENRE_ID
+	     LEFT JOIN
+     (SELECT group_concat(mg.GENRE_ID) genres, m.ID as MOVIE_ID
+      FROM movie m
+	           LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
+      GROUP BY TITLE) genreId on genreId.MOVIE_ID = m.ID';
 
 	if ($code !== '')
 	{
@@ -57,25 +68,21 @@ GROUP BY TITLE) genreName on genreName.MOVIE_ID = m.ID';
 
 function getMovie(mysqli $database, int $id): array
 {
-	// $id = htmlspecialchars($id);
-
-	$query = "SELECT m.ID, m.TITLE, m.ORIGINAL_TITLE, m.DESCRIPTION, m.DURATION, m.RELEASE_DATE, m.RATING, M.AGE_RESTRICTION, genreName.genres, d.NAME DIRECTOR_NAME, actors
+	$query = "SELECT m.ID, m.TITLE, m.ORIGINAL_TITLE, m.DESCRIPTION, m.DURATION, m.RELEASE_DATE, m.RATING, M.AGE_RESTRICTION, genreId.genres, d.NAME DIRECTOR_NAME, actors
 FROM movie m
 	     LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
 	     LEFT JOIN genre g on mg.GENRE_ID = g.ID
-LEFT JOIN
-(SELECT group_concat(g.NAME SEPARATOR ', ') genres, m.ID as MOVIE_ID
-FROM movie m
-	     LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
-	     LEFT JOIN genre g on mg.GENRE_ID = g.ID
-GROUP BY TITLE) genreName on genreName.MOVIE_ID = m.ID
-LEFT JOIN director d on d.ID = m.DIRECTOR_ID
+	     LEFT JOIN
+     (SELECT group_concat(mg.GENRE_ID) genres, m.ID as MOVIE_ID
+      FROM movie m
+	           LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
+      GROUP BY TITLE) genreId on genreId.MOVIE_ID = m.ID
+	     LEFT JOIN director d on d.ID = m.DIRECTOR_ID
 
-LEFT JOIN
-     (SELECT group_concat(a.NAME SEPARATOR ', ') actors, m.ID as MOVIE_ID
+	     LEFT JOIN
+     (SELECT group_concat(ma.ACTOR_ID) actors, m.ID as MOVIE_ID
       FROM movie m
 	           LEFT OUTER JOIN movie_actor ma on m.ID = ma.MOVIE_ID
-	           LEFT JOIN actor a on a.ID = ma.ACTOR_ID
       GROUP BY TITLE) actors on actors.MOVIE_ID = m.ID WHERE m.ID = '{$id}' GROUP BY 1";
 
 	$resultDB = mysqli_query($database, $query);
@@ -98,16 +105,14 @@ function searchMovie(mysqli $database, string $searchQuery): array
 {
 	$searchQuery = htmlspecialchars($searchQuery);
 
-	$query = "SELECT m.ID, m.TITLE, m.ORIGINAL_TITLE, m.DESCRIPTION, m.DURATION, m.RELEASE_DATE, genreName.genres
+	$query = "SELECT m.ID, m.TITLE, m.ORIGINAL_TITLE, m.DESCRIPTION, m.DURATION, m.RELEASE_DATE, genreId.genres
 FROM movie m
 	     LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
-	     LEFT JOIN genre g on mg.GENRE_ID = g.ID
 	     LEFT JOIN
-     (SELECT group_concat(g.NAME) genres, m.ID as MOVIE_ID
+     (SELECT group_concat(mg.GENRE_ID) genres, m.ID as MOVIE_ID
       FROM movie m
 	           LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
-	           LEFT JOIN genre g on mg.GENRE_ID = g.ID
-      GROUP BY TITLE) genreName on genreName.MOVIE_ID = m.ID
+      GROUP BY TITLE) genreId on genreId.MOVIE_ID = m.ID
 WHERE m.TITLE LIKE '%{$searchQuery}%'
 GROUP BY 1";
 
@@ -125,5 +130,27 @@ GROUP BY 1";
 	}
 	renderTemplate('./resources/pages/no-search-results.php');
 	return $out;
+}
+
+function getGenresByListId(array $genres, string $ids): string
+{
+	$idList = explode(',', $ids);
+	$movieGenres = [];
+	foreach ($idList as $id)
+	{
+		$movieGenres[] = $genres[(int)$id]['NAME'];
+	}
+	return implode(', ', array_slice($movieGenres, 0, 3));
+}
+
+function getActorsByListId(array $actors, string $ids): string
+{
+	$idList = explode(',', $ids);
+	$movieActors = [];
+	foreach ($idList as $id)
+	{
+		$movieActors[] = $actors[(int)$id]['NAME'];
+	}
+	return implode(', ', $movieActors);
 }
 

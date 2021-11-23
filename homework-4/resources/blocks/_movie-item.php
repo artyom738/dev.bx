@@ -12,12 +12,7 @@ $movieDescription = mb_strimwidth($movie['DESCRIPTION'], 0, 190, '...');
 $duration = $movie['DURATION'];
 
 $durationHoursMins = '0' . intdiv($duration, 60) . ':' . ($duration % 60);
-
-$movieGenres = implode(', ', array_slice(explode(',', $movie['genres']), 0, 3));
-
 ?>
-
-
 
 <div class="movie-list-item">
 	<div class="movie-list-item-overlay">

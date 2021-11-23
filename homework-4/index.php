@@ -6,7 +6,6 @@ declare(strict_types = 1);
 /** @var array $settings */
 
 require_once './lib/template-functions.php';
-require_once "./lib/pagename.php";
 require_once "config/app.php";
 require_once "config/db.php";
 require_once './lib/movie-filtering.php';
@@ -17,29 +16,31 @@ $genres = getGenres($database);
 
 if (isset($_GET['genre']))
 {
-	$movies = getMovies($database, $_GET['genre']);
-	$pagename = ucwords($_GET['genre']);
-	$movieItem = renderTemplate('./resources/pages/movie-item.php', ['movies' => $movies]);
+	$genre = mysqli_real_escape_string($database, $_GET['genre']);
+	$movies = getMovies($database, $genre);
+	$pagename = ucwords($genre);
+	$movieItem = renderTemplate('./resources/pages/movie-item.php', ['movies' => $movies, 'genres' => $genres]);
 }
 elseif (isset($_GET['query']) && $_GET['query'] !== '')
 {
-	$pagename = 'Поиск по запросу: ' . $_GET['query'];
+	$query = mysqli_real_escape_string($database, $_GET['query']);
+	$pagename = 'Поиск по запросу: ' . $query;
+	$moviesForQuery = searchMovie($database, $query);
 
-	$moviesForQuery = searchMovie($database, $_GET['query']);
 	if (empty($moviesForQuery))
 	{
 		$movieItem = renderTemplate('./resources/pages/no-search-results.php');
 	}
 	else
 	{
-		$movieItem = renderTemplate('./resources/pages/movie-item.php', ['movies' => $moviesForQuery]);
+		$movieItem = renderTemplate('./resources/pages/movie-item.php', ['movies' => $moviesForQuery, 'genres' => $genres]);
 	}
 }
 else
 {
 	$pagename = $config['menu']['index'];
 	$movies = getMovies($database);
-	$movieItem = renderTemplate('./resources/pages/movie-item.php', ['movies' => $movies]);
+	$movieItem = renderTemplate('./resources/pages/movie-item.php', ['movies' => $movies, 'genres' => $genres]);
 }
 
 $currentPage = basename($_SERVER['SCRIPT_FILENAME']);

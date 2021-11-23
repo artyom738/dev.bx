@@ -7,7 +7,6 @@ declare(strict_types=1);
 /** @var array $pageName */
 
 require_once './lib/template-functions.php';
-require_once "./lib/pagename.php";
 require_once "./config/app.php";
 require_once "config/db.php";
 require_once './lib/movie-filtering.php';
