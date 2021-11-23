@@ -72,18 +72,20 @@ function getMovie(mysqli $database, int $id): array
 FROM movie m
 	     LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
 	     LEFT JOIN genre g on mg.GENRE_ID = g.ID
-	     LEFT JOIN
+	     RIGHT JOIN
      (SELECT group_concat(mg.GENRE_ID) genres, m.ID as MOVIE_ID
       FROM movie m
-	           LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
+	           LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID 
+     WHERE m.ID = '{$id}'
       GROUP BY TITLE) genreId on genreId.MOVIE_ID = m.ID
 	     LEFT JOIN director d on d.ID = m.DIRECTOR_ID
 
-	     LEFT JOIN
+	     RIGHT JOIN
      (SELECT group_concat(ma.ACTOR_ID) actors, m.ID as MOVIE_ID
       FROM movie m
-	           LEFT OUTER JOIN movie_actor ma on m.ID = ma.MOVIE_ID
-      GROUP BY TITLE) actors on actors.MOVIE_ID = m.ID WHERE m.ID = '{$id}' GROUP BY 1";
+	           LEFT OUTER JOIN movie_actor ma on m.ID = ma.MOVIE_ID 
+     WHERE m.ID = '{$id}'
+      GROUP BY TITLE) actors on actors.MOVIE_ID = m.ID GROUP BY 1";
 
 	$resultDB = mysqli_query($database, $query);
 
@@ -108,12 +110,12 @@ function searchMovie(mysqli $database, string $searchQuery): array
 	$query = "SELECT m.ID, m.TITLE, m.ORIGINAL_TITLE, m.DESCRIPTION, m.DURATION, m.RELEASE_DATE, genreId.genres
 FROM movie m
 	     LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
-	     LEFT JOIN
+	     RIGHT JOIN
      (SELECT group_concat(mg.GENRE_ID) genres, m.ID as MOVIE_ID
       FROM movie m
-	           LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID
+	           LEFT JOIN movie_genre mg on m.ID = mg.MOVIE_ID 
+     WHERE m.TITLE LIKE '%{$searchQuery}%'
       GROUP BY TITLE) genreId on genreId.MOVIE_ID = m.ID
-WHERE m.TITLE LIKE '%{$searchQuery}%'
 GROUP BY 1";
 
 	$resultDB = mysqli_query($database, $query);
