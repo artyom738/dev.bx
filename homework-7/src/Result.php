@@ -20,7 +20,7 @@ class Result
 	 *
 	 * @return bool
 	 */
-	public function isSuccess()
+	public function isSuccess(): bool
 	{
 		return $this->isSuccess;
 	}
@@ -31,7 +31,7 @@ class Result
 	 * @param \Error $error
 	 * @return $this
 	 */
-	public function addError(\Error $error)
+	public function addError(\Error $error): Result
 	{
 		$this->isSuccess = false;
 		$this->errors[] = $error;
@@ -43,7 +43,7 @@ class Result
 	 *
 	 * @return \Error[]
 	 */
-	public function getErrors()
+	public function getErrors(): array
 	{
 		return $this->errors;
 	}
@@ -53,7 +53,7 @@ class Result
 	 *
 	 * @return array
 	 */
-	public function getErrorMessages()
+	public function getErrorMessages(): array
 	{
 		$messages = [];
 
@@ -74,7 +74,7 @@ class Result
 	public function addErrors(array $errors)
 	{
 		$this->isSuccess = false;
-		$this->errors += $errors;
+		$this->errors = array_merge($this->errors, $errors);
 
 		return $this;
 	}

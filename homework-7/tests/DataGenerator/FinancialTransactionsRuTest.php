@@ -1,10 +1,8 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
-
-class FinancialTransactionsRuTest extends TestCase
+class FinancialTransactionsRuTest extends \PHPUnit\Framework\TestCase
 {
-	public function getValidateFailEmptySamples(): array
+	public function getValidateFailSamples(): array
 	{
 		return [
 			'empty' => [
@@ -17,80 +15,13 @@ class FinancialTransactionsRuTest extends TestCase
 					'BankName' => '',
 					'BIC' => '',
 					'CorrespAcc' => '',
-				],
-			],
-			'filled but empty name' => [
-				[
-					'Name' => '',
-					'PersonalAcc' => 'PersonalAcc',
-					'BankName' => 'BankName',
-					'BIC' => 'BIC',
-					'CorrespAcc' => 'CorrespAcc',
-				],
-			],
-			'filled but empty BankName' => [
-				[
-					'Name' => 'Name',
-					'PersonalAcc' => 'PersonalAcc',
-					'BankName' => '',
-					'BIC' => 'BIC',
-					'CorrespAcc' => 'CorrespAcc',
-				],
-			],
-			'filled but empty two fields' => [
-				[
-					'Name' => 'Name',
-					'PersonalAcc' => '',
-					'BankName' => 'BankName',
-					'BIC' => 'BIC',
-					'CorrespAcc' => '',
-				],
-			],
-
-		];
-	}
-
-	public function getValidateFailLongValuesSamples(): array
-	{
-		return [
-			'filled but with all too long fields' => [
-				[
-					'Name' => 'NameOfThePersonNameOfThePersonNameOfThePersonNameOfThePersonNameOfThePersonNameOfThePersonNameOfThePersonNameOfThePersonNameOfThePersonNameOfThePersonNameOfThePersonNameOfThePerson',
-					'PersonalAcc' => '12345678912345678978987',
-					'BankName' => 'SberbankVTBTinkoffSberbankVTBTinkoffSberbankVTBTinkoff',
-					'BIC' => 'SberbankVTBTinkoff',
-					'CorrespAcc' => 'CorrespondentAccountOfTheUser',
-				],
-			],
-			'filled but with two too long fields' => [
-				[
-					'Name' => 'Name',
-					'PersonalAcc' => '12345678912345678978987',
-					'BankName' => 'Sber',
-					'BIC' => 'SberbankVTBTinkoff',
-					'CorrespAcc' => 'CorrAccount',
-				],
-			],
-		];
-	}
-
-	public function getValidateSuccessSamples(): array
-	{
-		return [
-			'filled' => [
-				[
-					'Name' => 'Name',
-					'PersonalAcc' => 'PersonalAcc',
-					'BankName' => 'BankName',
-					'BIC' => 'BIC',
-					'CorrespAcc' => 'CorrespAcc',
-				],
+				]
 			],
 		];
 	}
 
 	/**
-	 * @dataProvider getValidateFailEmptySamples
+	 * @dataProvider getValidateFailSamples
 	 *
 	 * @param array $fields
 	 */
@@ -105,66 +36,19 @@ class FinancialTransactionsRuTest extends TestCase
 		static::assertFalse($result->isSuccess());
 	}
 
-	/**
-	 * @dataProvider getValidateFailEmptySamples
-	 *
-	 * @param array $fields
-	 */
-	public function testValidateFailWithErrorMessageEmptyField(array $fields): void
+	public function testThatValidateSuccess(): void
 	{
 		$dataGenerator = new \App\DataGenerator\FinancialTransactionsRu();
 
-		$dataGenerator->setFields($fields);
+		$dataGenerator->setFields([]);
 
-		$result = $dataGenerator->validate();
-		$errors = $result->getErrorMessages();
-
-		static::assertFalse($result->isSuccess());
-
-		foreach (array_keys($fields) as $field)
-		{
-			if ($fields[$field] === '')
-			{
-				static::assertContains("Mandatory field {$field} is not filled", $errors);
-			}
-		}
-	}
-
-	/**
-	 * @dataProvider getValidateFailLongValuesSamples
-	 *
-	 * @param array $fields
-	 */
-	public function testThatValidateFailsWithTooLongFields(array $fields): void
-	{
-		$dataGenerator = new \App\DataGenerator\FinancialTransactionsRu();
-
-		$dataGenerator->setFields($fields);
-
-		$result = $dataGenerator->validate();
-		$errors = $result->getErrorMessages();
-
-		static::assertFalse($result->isSuccess());
-
-		foreach (array_keys($fields) as $field)
-		{
-			if (strlen($fields[$field]) > $dataGenerator->getFieldValueMaximumLength($field))
-			{
-				static::assertContains("The value of {$field} is too long", $errors);
-			}
-		}
-	}
-
-	/**
-	 * @dataProvider getValidateSuccessSamples
-	 *
-	 * @param array $fields
-	 */
-	public function testThatValidateSuccess(array $fields): void
-	{
-		$dataGenerator = new \App\DataGenerator\FinancialTransactionsRu();
-
-		$dataGenerator->setFields($fields);
+		$dataGenerator
+			->setName('Name')
+			->setBIC('BIC')
+			->setBankName('BankName')
+			->setCorrespondentAccount('CorrespondentAccount')
+			->setPersonalAccount('CorrespondentAccount')
+		;
 
 		$result = $dataGenerator->validate();
 
