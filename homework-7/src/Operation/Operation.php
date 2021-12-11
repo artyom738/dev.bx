@@ -55,8 +55,7 @@ class Operation
 		}
 
 		$saveResult = $this->save();
-		var_dump($saveResult->isSuccess());
-		if (!$saveResult->isSuccess())
+		if (!$saveResult->isSuccess() && $saveResult->getErrors())
 		{
 			return $result->addErrors($saveResult->getErrors());
 		}

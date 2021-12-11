@@ -145,7 +145,6 @@ class OperationTest extends TestCase
 		);
 
 		$result = $operation->launch();
-		// var_dump($result->isSuccess());
 
 		static::assertFalse($result->isSuccess());
 		static::assertEquals($errorMessage, $result->getErrorMessages()[0]);
